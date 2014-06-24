@@ -1,21 +1,21 @@
-FROM ubuntu:precise
-MAINTAINER Tim Haak <tim@haak.co.uk>
+FROM		ubuntu:precise
+MAINTAINER	Tim Haak <tim@haak.co.uk>
 
-RUN apt-get -q update
-RUN apt-get -qy --force-yes dist-upgrade
+RUN			echo "deb http://archive.ubuntu.com/ubuntu precise multiverse" >> /etc/apt/sources.list
+RUN			apt-get -q update
 
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise multiverse" >> /etc/apt/sources.list
+RUN			apt-get install -qy --force-yes sabnzbdplus sabnzbdplus-theme-classic sabnzbdplus-theme-mobile sabnzbdplus-theme-plush
 
-RUN apt-get -q update
+VOLUME		/config
+VOLUME		/data
 
-RUN apt-get install -qy --force-yes sabnzbdplus sabnzbdplus-theme-classic sabnzbdplus-theme-mobile sabnzbdplus-theme-plush
+ADD			./start.sh /start.sh
+RUN			chmod u+x  /start.sh
 
-VOLUME /config
-VOLUME /data
+VOLUME		/config
+VOLUME		/data
 
-ADD ./start.sh /start.sh
-RUN chmod u+x  /start.sh
+EXPOSE		8080
+EXPOSE		9090
 
-EXPOSE 8080 9090
-
-ENTRYPOINT ["/start.sh"]
+ENTRYPOINT	["/start.sh"]
